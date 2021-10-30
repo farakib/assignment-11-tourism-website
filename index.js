@@ -15,16 +15,32 @@ async function run(){
     try{
       await client.connect();
       console.log('connected successfully');
-      const database = client.db('tourBd');
-      const tourCollection = database.collection('services');
-
+      const database = client.db('tour_Bd');
+      const serviceCollection = database.collection('services');
+      const usersCollection = database.collection('users')
 
       //get tours api 
       app.get('/services', async(req, res) => {
-        const cursor = tourCollection.find({});
+        const cursor = serviceCollection.find({});
         const services = await cursor.toArray();
         res.send(services);
       })
+      //getting users
+      app.get('/users', async(req, res) => {
+        const cursor = usersCollection.find({});
+        const users = await cursor.toArray();
+        res.send(users);
+      })
+        //post api for tour bookings
+      app.post('/users', async (req, res) => {
+        const newUser = req.body;
+        const result =  await usersCollection.insertedOne(newUser);
+        console.log('got new user', result);
+        console.log('hitting the post', req.body);
+        res.json(result);
+      })
+
+
     }
     finally{
       //await client.close();
