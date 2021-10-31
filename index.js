@@ -34,7 +34,7 @@ async function run(){
         //post api for tour bookings
       app.post('/users', async (req, res) => {
         const newUser = req.body;
-        const result =  await usersCollection.insertedOne(newUser);
+        const result =  await usersCollection.insertOne(newUser);
         console.log('got new user', result);
         console.log('hitting the post', req.body);
         res.json(result);
